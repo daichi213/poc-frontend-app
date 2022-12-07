@@ -11,7 +11,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: node:19-alpine
+      image: node:19-buster-slim
+      volumes:
+        - ${{ github.workspace }}:${{ github.workspace }}
       env:
         NODE_ENV: development
       options: --cpus 2
@@ -36,5 +38,9 @@ jobs:
         shell: bash
         run: |
             set -x
+            whoami
+            pwd
+            find ${{ github.workspace }}
+            ls -la ${{ github.workspace }}/.github
             sudo chmod +x ${{ github.workspace }}/.github/build.sh
             sh ${{ github.workspace }}/.github/build.sh
