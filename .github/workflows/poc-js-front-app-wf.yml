@@ -35,5 +35,6 @@ jobs:
       - name: Display the path
         shell: bash
         run: |
-            chmod +x ${{ github.workspace }}/.github/build.sh
+            set -x
+            sudo chmod +x ${{ github.workspace }}/.github/build.sh
             sh ${{ github.workspace }}/.github/build.sh
