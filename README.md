@@ -1,6 +1,16 @@
 # Pipeline PoC
 パイプラインのPoCを作成するためのレポジトリ
 
+## パイプライン
+
+### リンクメモ
+
+- [別レポジトリにあるWFを直接呼び出す方法参考](https://zenn.dev/jerome/articles/cc07ad73e017ad)
+- [PATを使用する方法以外で別レポジトリからコードをCheckoutする方法参考](https://caddi.tech/archives/3737)
+- [GitHubAction内で使用できる変数一覧](https://docs.github.com/en/actions/learn-github-actions/contexts)
+- [actins/cacheの公式ページ](https://github.com/actions/cache)
+- [WFをContainerで実行する方法](https://docs.github.com/ja/actions/using-jobs/running-jobs-in-a-container)
+
 ## SampleApp
 
 ### Next.jsのボイラーテンプレート作成
