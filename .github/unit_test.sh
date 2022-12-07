@@ -5,4 +5,5 @@
 ####################################################
 
 cd ./sample_app
-yarn install
+yarn lint
+yarn test

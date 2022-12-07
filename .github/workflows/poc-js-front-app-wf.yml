@@ -34,7 +34,17 @@ jobs:
           key: node-modules-${{ github.sha }}
           restore-keys: node-modules-
 
-      - name: Display the path
+      - name: App Src Build
         shell: bash
         run: |
             sh ${{ github.workspace }}/.github/build.sh
+
+      - name: Unit Test
+        shell: bash
+        run: |
+            sh ${{ github.workspace }}/.github/unit_test.sh
+
+      - name: Integration Test
+        shell: bash
+        run: |
+            sh ${{ github.workspace }}/.github/integration_test.sh

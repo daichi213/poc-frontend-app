@@ -4,5 +4,4 @@
 # AppSrc内でビルドする処理を記述するためのシェル
 ####################################################
 
-cd ./sample_app
-yarn install
+echo "Read the integration_test.sh"
