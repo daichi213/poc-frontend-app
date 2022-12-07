@@ -37,10 +37,4 @@ jobs:
       - name: Display the path
         shell: bash
         run: |
-            set -x
-            whoami
-            pwd
-            find ${{ github.workspace }}
-            ls -la ${{ github.workspace }}/.github
-            sudo chmod +x ${{ github.workspace }}/.github/build.sh
             sh ${{ github.workspace }}/.github/build.sh
