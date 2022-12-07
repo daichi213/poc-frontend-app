@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
-echo "Running WF"
+cd ./sample_app
+yarn install
+yarn lint
