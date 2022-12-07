@@ -34,4 +34,6 @@ jobs:
 
       - name: Display the path
         shell: bash
-        run: ${{ github.workspace }}/.github/build.sh
+        run: |
+            chmod +x ${{ github.workspace }}/.github/build.sh
+            sh ${{ github.workspace }}/.github/build.sh
