@@ -48,3 +48,11 @@ jobs:
         shell: bash
         run: |
             sh ${{ github.workspace }}/.github/integration_test.sh
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './sample_app'
+          # image-ref: test:latest
+          # output: 'trivy-results.sarif'

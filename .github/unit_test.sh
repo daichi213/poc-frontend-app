@@ -7,4 +7,4 @@
 
 cd ./sample_app
 yarn lint
-yarn test
+# yarn test
