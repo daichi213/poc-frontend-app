@@ -52,13 +52,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: ./.github
-          file: ./Dockerfile
-          push: false
-          tags: v0
+      # - name: Build and push
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: ./.github
+      #     file: ./Dockerfile
+      #     push: false
+      #     tags: v0
+
+      - name: Integration Test
+        shell: bash
+        run: |
+            docker build -t test:latest -f ${{ github.workspace }}/.github/Dockerfile .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
