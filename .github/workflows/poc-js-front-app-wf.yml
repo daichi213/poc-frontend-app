@@ -52,6 +52,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: SetUp docker command
+        uses: docker-practice/actions-setup-docker@master
+
       # - name: Build and push
       #   uses: docker/build-push-action@v3
       #   with:
@@ -60,7 +63,7 @@ jobs:
       #     push: false
       #     tags: v0
 
-      - name: Integration Test
+      - name: Container Image Build
         shell: bash
         run: |
             docker build -t test:latest -f ${{ github.workspace }}/.github/Dockerfile .
