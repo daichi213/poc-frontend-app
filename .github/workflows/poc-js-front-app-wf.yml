@@ -10,13 +10,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: node:19-buster-slim
-      volumes:
-        - ${{ github.workspace }}:${{ github.workspace }}
-      env:
-        NODE_ENV: development
-      options: --cpus 2
+    # container:
+    #   image: node:19-buster-slim
+    #   volumes:
+    #     - ${{ github.workspace }}:${{ github.workspace }}
+    #   env:
+    #     NODE_ENV: development
+    #   options: --cpus 2
     steps:
       - uses: actions/checkout@v3
 
@@ -49,20 +49,6 @@ jobs:
         run: |
             sh ${{ github.workspace }}/.github/integration_test.sh
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: SetUp docker command
-        uses: docker-practice/actions-setup-docker@master
-
-      # - name: Build and push
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: ./.github
-      #     file: ./Dockerfile
-      #     push: false
-      #     tags: v0
-
       - name: Container Image Build
         shell: bash
         run: |
@@ -71,6 +57,6 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: .
+          image-ref: test:latest
           format: 'sarif'
           output: 'trivy-results.sarif'
