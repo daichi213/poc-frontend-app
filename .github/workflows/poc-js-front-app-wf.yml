@@ -56,4 +56,5 @@ jobs:
           scan-ref: './sample_app'
           severity: 'CRITICAL'
           timeout: 5m
+          vuln-type: library
           exit-code: 0
