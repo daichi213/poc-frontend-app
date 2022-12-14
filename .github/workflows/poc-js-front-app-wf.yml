@@ -54,5 +54,6 @@ jobs:
         with:
           scan-type: 'fs'
           scan-ref: './sample_app'
-          # image-ref: test:latest
-          # output: 'trivy-results.sarif'
+          severity: 'CRITICAL'
+          timeout: 5m
+          exit-code: 0
