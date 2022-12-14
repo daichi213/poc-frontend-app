@@ -48,3 +48,21 @@ jobs:
         shell: bash
         run: |
             sh ${{ github.workspace }}/.github/integration_test.sh
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ./.github
+          file: ./Dockerfile
+          push: false
+          tags: v0
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: .
+          format: 'sarif'
+          output: 'trivy-results.sarif'
