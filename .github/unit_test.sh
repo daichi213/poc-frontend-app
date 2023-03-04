@@ -6,4 +6,5 @@
 ####################################################
 
 cd ./sample_app
-npm test
+yarn lint
+yarn test
