@@ -4,6 +4,8 @@ const assert = require('assert');
 
 const options = new chrome.Options();
 options.addArguments('--headless'); // ヘッドレスモードでブラウザを起動する
+options.addArguments('--no-sandbox');
+options.addArguments('--disable-dev-shm-usage');
 
 const driver = new webdriver.Builder()
   .forBrowser('chrome')
