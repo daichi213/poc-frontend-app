@@ -6,3 +6,6 @@
 ####################################################
 
 echo "Read the integration_test.sh"
+cd ./sample_app/selenium
+npm run dev
+node sample_test.ts
