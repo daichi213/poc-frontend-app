@@ -5,6 +5,8 @@
 # シェルの実行はレポジトリのルートディレクトリになるため、package.jsonが存在するディレクトリへ移動してからyarnコマンドを実行する
 ####################################################
 
+set -x
+
 echo "Read the integration_test.sh"
 cd ./sample_app/selenium
 
