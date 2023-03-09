@@ -12,6 +12,8 @@ cd ./sample_app/selenium
 nohup next dev > /dev/null 2>&1 &
 echo "Waiting for server to start..."
 
+sleep 5
+
 # Wait until server is ready
 until $(curl --output /dev/null --silent --head --fail http://localhost:3000); do
   printf '.'
