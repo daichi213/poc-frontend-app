@@ -52,7 +52,10 @@ jobs:
           restore-keys: node-modules-
 
       - name: Install dependencies
-        run: sudo apt -y install libxml2-utils
+        run:
+          apt-get update
+          apt-get install sudo          
+          sudo apt-get -y install libxml2-utils
 
       - name: Add Google Chrome repository
         run: |
