@@ -51,10 +51,11 @@ jobs:
           key: node-modules-${{ github.sha }}
           restore-keys: node-modules-
 
-      - name: Install dependencies Selenium
+      - name: Install Dependencies Selenium
+        shell: bash
         run: |
             sh ${{ github.workspace }}/.github/selenium_requirement.sh
-            
+
       - name: App Src Build
         shell: bash
         run: |
