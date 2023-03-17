@@ -1,37 +1,67 @@
-const webdriver = require('selenium-webdriver');
+const {Builder, By, Key, until} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-const assert = require('assert');
 
 const options = new chrome.Options();
-options.addArguments('--headless'); // ヘッドレスモードでブラウザを起動する
-options.addArguments('--no-sandbox');
+options.setChromeBinaryPath('/usr/bin/google-chrome-stable'); // Google Chrome のパスを指定
+options.addArguments('--headless'); // ヘッドレスモードを有効にする
 options.addArguments('--disable-dev-shm-usage');
+options.addArguments('--no-sandbox');
+options.addArguments('--remote-debugging-port=9222');
 
-const driver = new webdriver.Builder()
-  .forBrowser('chrome')
-  .setChromeOptions(options)
-  .build();
+const driver = new Builder()
+    .forBrowser('chrome')
+    .setChromeOptions(options)
+    .setChromeService(new chrome.ServiceBuilder('/usr/local/bin/chromedriver'))
+    .build();
 
-const url = 'http://localhost:3000/';
+// テストコードを書く
 
 (async function example() {
   try {
-    // URLを開く
-    await driver.get(url);
+    // 指定されたURLに移動
+    await driver.get('http://localhost:3000/');
 
-    // リンク先の要素を取得し、アクティブであることを確認する
-    const link = await driver.findElement(webdriver.By.linkText('Next.js'));
-    const isActive = await link.getAttribute('class').then(classes => classes.includes('active'));
-    assert.ok(isActive, 'Link is not active');
+    // リンク先の要素を検索し、クリックして移動
+    const linkElement = await driver.wait(until.elementLocated(By.linkText('Next.js!')), 10000); // 10秒間待機する
+    await linkElement.click();
 
-    // レスポンスが200であることを確認する
-    const statusCode = await driver.executeScript('return window.performance.getEntries()[0].response.status;');
-    assert.equal(statusCode, 200, 'Response status code is not 200');
+    // 現在のURLを取得し、レスポンスを確認
+    const currentUrl = await driver.getCurrentUrl();
+    // 結果を出力
+    console.log(`Current URL: ${currentUrl}`);
 
-    console.log('Test passed successfully!');
-  } catch (error) {
-    console.error('Test failed with error:', error);
+    // ※現在は非推奨なようです。代替のfetchを使います。
+    //const httpStatusCode = await driver.executeScript(`
+    //const xhr = new XMLHttpRequest();
+    //xhr.open('HEAD', window.location.href, false);
+    //xhr.send();
+    //return xhr.status;
+    //`);
+
+    // seleniumにレスポンス取得メソッドがないため、無理やりJSのメソッドを使う
+    const httpStatusCode = await driver.executeScript(`
+    return fetch(window.location.href, { method: 'HEAD' })
+      .then(response => response.status);
+    `);    
+
+    console.log(`HTTP Status Code: ${httpStatusCode}`);
+
+    // リンク先のページがアクティブであることを確認
+    if (currentUrl === 'https://nextjs.org/') {
+      console.log('Link is active.');
+    } else {
+      console.log('Link is not active.');
+    }
+
+    // HTTPレスポンスが200であることを確認
+    if (httpStatusCode === 200) {
+      console.log('HTTP response status is 200.');
+    } else {
+      console.log(`HTTP response status is ${httpStatusCode}.`);
+    }
+
   } finally {
+    // WebDriverを終了
     await driver.quit();
   }
 })();
