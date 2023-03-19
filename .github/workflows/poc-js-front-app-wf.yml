@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: node:19-buster-slim
+      image: ubuntu:20.04
       volumes:
         - ${{ github.workspace }}:${{ github.workspace }}
       env:
@@ -26,6 +26,12 @@ jobs:
           token: ${{ secrets.PAT_PIPELINE_MAKING_REPO }}
           path: './pipeline-making'
           ref: "feature/ozaki_poc"
+
+      - name: Install Node.js and Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19.x'
+          cache: 'yarn'
 
       - name: SetEnv
         env:

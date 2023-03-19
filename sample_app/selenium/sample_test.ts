@@ -1,28 +1,31 @@
-const {Builder, By, Key, until} = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
+const { Builder, By, Key, until } = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
 
 const options = new chrome.Options();
-options.setChromeBinaryPath('/usr/bin/google-chrome-stable'); // Google Chrome のパスを指定
-options.addArguments('--headless'); // ヘッドレスモードを有効にする
-options.addArguments('--disable-dev-shm-usage');
-options.addArguments('--no-sandbox');
-options.addArguments('--remote-debugging-port=9222');
+options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome のパスを指定
+options.addArguments("--headless"); // ヘッドレスモードを有効にする
+options.addArguments("--disable-dev-shm-usage");
+options.addArguments("--no-sandbox");
+options.addArguments("--remote-debugging-port=9222");
 
 const driver = new Builder()
-    .forBrowser('chrome')
-    .setChromeOptions(options)
-    .setChromeService(new chrome.ServiceBuilder('/usr/local/bin/chromedriver'))
-    .build();
+  .forBrowser("chrome")
+  .setChromeOptions(options)
+  .setChromeService(new chrome.ServiceBuilder("/usr/local/bin/chromedriver"))
+  .build();
 
 // テストコードを書く
 
 (async function example() {
   try {
     // 指定されたURLに移動
-    await driver.get('http://localhost:3000/');
+    await driver.get("http://localhost:3000/");
 
     // リンク先の要素を検索し、クリックして移動
-    const linkElement = await driver.wait(until.elementLocated(By.linkText('Next.js!')), 10000); // 10秒間待機する
+    const linkElement = await driver.wait(
+      until.elementLocated(By.linkText("Next.js!")),
+      10000
+    ); // 10秒間待機する
     await linkElement.click();
 
     // 現在のURLを取得し、レスポンスを確認
@@ -42,26 +45,30 @@ const driver = new Builder()
     const httpStatusCode = await driver.executeScript(`
     return fetch(window.location.href, { method: 'HEAD' })
       .then(response => response.status);
-    `);    
+    `);
 
     console.log(`HTTP Status Code: ${httpStatusCode}`);
 
     // リンク先のページがアクティブであることを確認
-    if (currentUrl === 'https://nextjs.org/') {
-      console.log('Link is active.');
+    if (currentUrl === "https://nextjs.org/") {
+      console.log("Link is active.");
     } else {
-      console.log('Link is not active.');
+      console.log("Link is not active.");
     }
 
     // HTTPレスポンスが200であることを確認
     if (httpStatusCode === 200) {
-      console.log('HTTP response status is 200.');
+      console.log("HTTP response status is 200.");
     } else {
       console.log(`HTTP response status is ${httpStatusCode}.`);
     }
-
+  } catch (err) {
+    console.error("An error occurred:", err);
   } finally {
-    // WebDriverを終了
-    await driver.quit();
+    try {
+      await driver.quit();
+    } catch (err) {
+      console.error('An error occurred while quitting the driver:', err);
+    }
   }
 })();
