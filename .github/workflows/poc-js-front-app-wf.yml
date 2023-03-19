@@ -27,11 +27,13 @@ jobs:
           path: './pipeline-making'
           ref: "feature/ozaki_poc"
 
-      - name: Install Node.js and Yarn
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '19.x'
-          cache: 'yarn'
+
+      - name: Install Yarn
+        run: sudo apt-get update && sudo apt-get install -y curl gnupg && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - && echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list && sudo apt-get update && sudo apt-get install -y yarn
 
       - name: SetEnv
         env:
