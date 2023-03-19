@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # xmllint利用のため
-apt-get install -y sudo
 apt-get -y install libxml2-utils
 sudo apt-get install -y wget unzip
 
