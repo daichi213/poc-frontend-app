@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 # xmllint利用のため
-sudo apt -y install libxml2-utils
-sudo apt install -y wget unzip
+sudo apt-get -y install libxml2-utils
+sudo apt-get install -y wget unzip
 
 # sudoで実行すること
 # google chromeのインストーラを作成
 sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
 # パッケージリストの更新とGoogle Chromeのインストール
-sudo apt install -y google-chrome-stable
+sudo apt-get install -y google-chrome-stable
 
 # chromeのバージョンを取得
 chrome_v=$(google-chrome --version | cut -d " " -f 3 | cut -d "." -f 1)
