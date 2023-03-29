@@ -1,4 +1,4 @@
-name: poc-js-front-app-wf
+name: poc-js-front-app-wf-selenium-test
 
 on:
   workflow_dispatch:
