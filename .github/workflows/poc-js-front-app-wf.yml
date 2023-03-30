@@ -41,13 +41,6 @@ jobs:
         run: |
           apt-get update && apt-get install -y curl
 
-      - name: Wait for Chrome to start
-        run: |
-          chrome_ready() {
-            while ! curl http://localhost:3001 &>/dev/null; do sleep 1; done
-          }
-          chrome_ready
-
       - name: SetEnv
         env:
           PR_BRANCH_NAME: ${{ github.head_ref }}
