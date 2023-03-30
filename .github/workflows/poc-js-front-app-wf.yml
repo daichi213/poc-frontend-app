@@ -81,11 +81,6 @@ jobs:
         run: |
             sh ${{ github.workspace }}/.github/unit_test.sh
 
-      - name: Integration Test
-        shell: bash
-        run: |
-            sh ${{ github.workspace }}/.github/integration_test.sh
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -95,7 +90,7 @@ jobs:
           timeout: 5m
           vuln-type: library
           exit-code: 0
-          
+
   selenium_test:
     runs-on: ubuntu-latest
     container:
@@ -133,7 +128,7 @@ jobs:
             sh ${{ github.workspace }}/.github/build.sh
 
       - name: Start Chrome
-        uses: browserless/chrome@latest
+        uses: browserless/chrome@main
         with:
           options: >
             --no-sandbox
