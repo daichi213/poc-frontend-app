@@ -40,18 +40,11 @@ jobs:
       - name: Install curl
         run: |
           apt-get update && apt-get install -y curl
-           
+
       - name: Wait for Chrome to start
         run: |
           chrome_ready() {
-            curl -s http://localhost:3001 > /dev/null
-            if [ $? -eq 0 ]; then
-              echo "Chrome is ready to use!"
-            else
-              echo "Chrome is not ready yet, waiting 5 seconds..."
-              sleep 5
-              chrome_ready
-            fi
+            while ! curl http://localhost:3001 &>/dev/null; do sleep 1; done
           }
           chrome_ready
 
