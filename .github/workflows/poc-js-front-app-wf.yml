@@ -32,11 +32,10 @@ jobs:
           path: './pipeline-making'
           ref: "feature/ozaki_poc"
 
-      - name: Check Chrome Version
-        run: google-chrome --version
-
       - name: Check if Port 3001 is Open
-        run: lsof -i :3001
+        run: |
+          lsof -i :3001 &&
+          curl http://localhost:3001    
 
       - name: Install Node.js
         uses: actions/setup-node@v3
