@@ -95,11 +95,13 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: browserless/chrome:latest
+      ports:
+        - 3001:3001
       volumes:
         - ${{ github.workspace }}:${{ github.workspace }}
       env:
         NODE_ENV: development
-      options: --cap-add=SYS_ADMIN --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage
+      options: --cpus 2
     steps:
       - uses: actions/checkout@v3
 

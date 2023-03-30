@@ -1,16 +1,15 @@
-const { Builder, By, Key, until } = require("selenium-webdriver");
+const webdriver = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 
 const options = new chrome.Options();
-options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome のパスを指定
 options.addArguments("--headless"); // ヘッドレスモードを有効にする
 options.addArguments("--disable-dev-shm-usage");
 options.addArguments("--no-sandbox");
 
-const driver = new Builder()
+const driver = new webdriver.Builder()
   .forBrowser("chrome")
-  .setChromeOptions(options)
-  .setChromeService(new chrome.ServiceBuilder("/usr/local/bin/chromedriver"))
+  .withCapabilities(options)
+  .usingServer('https://chrome.browserless.io/webdriver')
   .build();
 
 // テストコードを書く
@@ -22,7 +21,7 @@ const driver = new Builder()
 
     // リンク先の要素を検索し、クリックして移動
     const linkElement = await driver.wait(
-      until.elementLocated(By.linkText("Next.js!")),
+      driver.until.elementLocated(driver.By.linkText("Next.js!")),
       10000
     ); // 10秒間待機する
     await linkElement.click();
