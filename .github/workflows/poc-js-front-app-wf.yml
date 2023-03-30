@@ -20,6 +20,8 @@ jobs:
     services:
       chrome:
         image: browserless/chrome:latest
+        ports:
+          - 3001:3001
     steps:
       - uses: actions/checkout@v3
 
@@ -37,15 +39,21 @@ jobs:
 
       - name: Install curl
         run: |
-          apt-get update && apt-get install -y curl 
-      - name: Check if Port 3001 is Open
+          apt-get update && apt-get install -y curl
+           
+      - name: Wait for Chrome to start
         run: |
-          curl http://chrome:3001
-        env:
-          # The hostname used to communicate with the Redis service container
-          CHROME_HOST: chrome
-          # The default Redis port
-          CHROME_PORT: 3001
+          chrome_ready() {
+            curl -s http://localhost:3001 > /dev/null
+            if [ $? -eq 0 ]; then
+              echo "Chrome is ready to use!"
+            else
+              echo "Chrome is not ready yet, waiting 5 seconds..."
+              sleep 5
+              chrome_ready
+            fi
+          }
+          chrome_ready
 
       - name: SetEnv
         env:
