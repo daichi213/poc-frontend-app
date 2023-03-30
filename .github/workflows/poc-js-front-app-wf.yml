@@ -95,54 +95,7 @@ jobs:
           timeout: 5m
           vuln-type: library
           exit-code: 0
-    build:
-    runs-on: ubuntu-latest
-    container:
-      image: ubuntu:20.04
-      volumes:
-        - ${{ github.workspace }}:${{ github.workspace }}
-      env:
-        NODE_ENV: development
-      options: --cpus 2
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/checkout@v3
-        with:
-          repository: 'wealsoft/pipeline-making'
-          token: ${{ secrets.PAT_PIPELINE_MAKING_REPO }}
-          path: './pipeline-making'
-          ref: "feature/ozaki_poc"
-
-      - name: Cache
-        uses: actions/cache@v3.0.11
-        with:
-          path: "**/node_modules"
-          key: node-modules-${{ github.sha }}
-          restore-keys: node-modules-
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y curl gnupg
-
-      - name: App Src Build
-        shell: bash
-        run: |
-            sh ${{ github.workspace }}/.github/build.sh
-
-      - name: Start Chrome
-        uses: browserless/chrome@latest
-        with:
-          options: >
-            --no-sandbox
-            --disable-setuid-sandbox
-            --disable-dev-shm-usage
-
-      - name: Integration Test
-        shell: bash
-        run: |
-            sh ${{ github.workspace }}/.github/integration_test.sh
+          
   selenium_test:
     runs-on: ubuntu-latest
     container:
