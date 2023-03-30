@@ -128,7 +128,7 @@ jobs:
             sh ${{ github.workspace }}/.github/build.sh
 
       - name: Start Chrome
-        uses: browserless/chrome@main
+        uses: browserless/chrome
         with:
           options: >
             --no-sandbox
