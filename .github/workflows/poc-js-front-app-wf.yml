@@ -42,7 +42,7 @@ jobs:
           apt-get update && apt-get install -y curl 
       - name: Check if Port 3001 is Open
         run: |
-          curl http://localhost:3001    
+          curl http://chrome  
 
       - name: SetEnv
         env:

@@ -9,7 +9,7 @@ options.addArguments('--no-sandbox');
 const driver = new webdriver.Builder()
   .forBrowser('chrome')
   .setChromeOptions(options)
-  .usingServer('http://localhost:3001/')
+  .usingServer('http://chrome/')
   .build();
 
 // テストコードを書く
