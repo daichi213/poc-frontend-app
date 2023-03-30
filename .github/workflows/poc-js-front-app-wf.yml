@@ -20,8 +20,6 @@ jobs:
     services:
       chrome:
         image: browserless/chrome:latest
-        ports:
-          - 3001:3001
     steps:
       - uses: actions/checkout@v3
 
@@ -42,10 +40,10 @@ jobs:
           apt-get update && apt-get install -y curl 
       - name: Check if Port 3001 is Open
         run: |
-          curl http://localhost:3001
+          curl http://chrome:3001
         env:
           # The hostname used to communicate with the Redis service container
-          CHROME_HOST: localhost
+          CHROME_HOST: chrome
           # The default Redis port
           CHROME_PORT: 3001
 
