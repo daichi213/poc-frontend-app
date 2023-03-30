@@ -42,7 +42,12 @@ jobs:
           apt-get update && apt-get install -y curl 
       - name: Check if Port 3001 is Open
         run: |
-          curl http://chrome  
+          curl http://localhost:3001
+        env:
+          # The hostname used to communicate with the Redis service container
+          CHROME_HOST: localhost
+          # The default Redis port
+          CHROME_PORT: 3001
 
       - name: SetEnv
         env:
