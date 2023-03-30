@@ -1,4 +1,6 @@
 FROM node:16-alpine
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-RUN apk update && apk add curl
+
+COPY sample_app sample_app
+WORKDIR sample_app
+RUN yarn install & yarn build
+CMD ['yarn','run','start']

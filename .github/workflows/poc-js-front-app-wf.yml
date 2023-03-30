@@ -17,11 +17,6 @@ jobs:
       env:
         NODE_ENV: development
       options: --cpus 2
-    services:
-      chrome:
-        image: browserless/chrome:latest
-        ports:
-          - 3001:3001
     steps:
       - uses: actions/checkout@v3
 
@@ -76,11 +71,6 @@ jobs:
         run: |
             sh ${{ github.workspace }}/.github/build.sh
 
-      - name: Integration Test
-        shell: bash
-        run: |
-            sh ${{ github.workspace }}/.github/integration_test.sh
-
       - name: Unit Test
         shell: bash
         run: |
@@ -95,3 +85,71 @@ jobs:
           timeout: 5m
           vuln-type: library
           exit-code: 0
+
+  integration-test:
+    runs-on: ubuntu-latest
+    container:
+      image: browserless/chrome:latest
+      volumes:
+        - ${{ github.workspace }}:${{ github.workspace }}
+      env:
+        NODE_ENV: development
+      options: --cpus 2
+    # TODO ここはyarn run startを起動してサーバーとして起動するコンテナ
+    # なので、image部分にはサーバー用にカスタムしたイメージをdocker hubへプッシュ
+    # ↑のプッシュしたイメージを指定する
+    # services:
+    #   chrome:
+    #     image: browserless/chrome:latest
+    #     ports:
+    #       - 3001:3001
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/checkout@v3
+        with:
+          repository: 'wealsoft/pipeline-making'
+          token: ${{ secrets.PAT_PIPELINE_MAKING_REPO }}
+          path: './pipeline-making'
+          ref: "feature/ozaki_poc"
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19.x'
+
+      - name: Install Yarn
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl gnupg &&
+          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - &&
+          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list &&
+          sudo apt-get update && sudo apt-get install -y yarn
+
+      - name: SetEnv
+        env:
+          PR_BRANCH_NAME: ${{ github.head_ref }}
+        shell: bash
+        run: |
+          echo build_tag=${PR_BRANCH_NAME#*/} >> $GITHUB_ENV
+
+      - name: SetConfigEnv
+        uses: mikefarah/yq@master
+        with:
+          cmd: |
+            CONFIG_COMMON_LIST=$(yq '.common' ./.github/config.yml | sed 's/\:\ /\=/')
+            for config_common in $CONFIG_COMMON_LIST
+            do
+              echo "$config_common" >> $GITHUB_ENV
+            done
+
+      - name: Cache
+        uses: actions/cache@v3.0.11
+        with:
+          path: "**/node_modules"
+          key: node-modules-${{ github.sha }}
+          restore-keys: node-modules-
+
+      - name: Integration Test
+        shell: bash
+        run: |
+            sh ${{ github.workspace }}/.github/integration_test.sh
