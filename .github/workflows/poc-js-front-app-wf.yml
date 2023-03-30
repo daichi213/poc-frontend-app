@@ -7,6 +7,12 @@ on:
   # pull_request:
   #   branches: [ "main" ]
 
+services:
+  chrome:
+    image: browserless/chrome:latest
+    ports:
+      - 3001:3001
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -66,10 +72,10 @@ jobs:
           key: node-modules-${{ github.sha }}
           restore-keys: node-modules-
 
-      - name: Install Dependencies Selenium
+      - name: Integration Test
         shell: bash
         run: |
-            sh ${{ github.workspace }}/.github/selenium_requirement.sh
+            sh ${{ github.workspace }}/.github/integration_test.sh
 
       - name: App Src Build
         shell: bash
@@ -90,46 +96,3 @@ jobs:
           timeout: 5m
           vuln-type: library
           exit-code: 0
-
-  selenium_test:
-    runs-on: ubuntu-latest
-    container:
-      image: browserless/chrome:latest
-      ports:
-        - 3001:3001
-      volumes:
-        - ${{ github.workspace }}:${{ github.workspace }}
-      env:
-        NODE_ENV: development
-      options: --cpus 2
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/checkout@v3
-        with:
-          repository: 'wealsoft/pipeline-making'
-          token: ${{ secrets.PAT_PIPELINE_MAKING_REPO }}
-          path: './pipeline-making'
-          ref: "feature/ozaki_poc"
-
-      - name: Cache
-        uses: actions/cache@v3.0.11
-        with:
-          path: "**/node_modules"
-          key: node-modules-${{ github.sha }}
-          restore-keys: node-modules-
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y curl gnupg
-
-      - name: App Src Build
-        shell: bash
-        run: |
-            sh ${{ github.workspace }}/.github/build.sh
-
-      - name: Integration Test
-        shell: bash
-        run: |
-            sh ${{ github.workspace }}/.github/integration_test.sh

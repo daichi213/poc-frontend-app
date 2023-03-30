@@ -9,7 +9,7 @@ options.addArguments("--no-sandbox");
 const driver = new webdriver.Builder()
   .forBrowser("chrome")
   .withCapabilities(options)
-  .usingServer('https://chrome.browserless.io/webdriver')
+  .usingServer('http://localhost:3001/wd/hub')
   .build();
 
 // テストコードを書く
