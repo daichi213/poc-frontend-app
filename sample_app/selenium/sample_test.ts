@@ -6,7 +6,6 @@ options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome �
 options.addArguments("--headless"); // ヘッドレスモードを有効にする
 options.addArguments("--disable-dev-shm-usage");
 options.addArguments("--no-sandbox");
-options.addArguments("--remote-debugging-port=9222");
 
 const driver = new Builder()
   .forBrowser("chrome")

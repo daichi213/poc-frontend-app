@@ -94,12 +94,12 @@ jobs:
   selenium_test:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:20.04
+      image: browserless/chrome:latest
       volumes:
         - ${{ github.workspace }}:${{ github.workspace }}
       env:
         NODE_ENV: development
-      options: --cpus 2
+      options: --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage
     steps:
       - uses: actions/checkout@v3
 
@@ -126,14 +126,6 @@ jobs:
         shell: bash
         run: |
             sh ${{ github.workspace }}/.github/build.sh
-
-      - name: Start Chrome
-        uses: browserless/chrome
-        with:
-          options: >
-            --no-sandbox
-            --disable-setuid-sandbox
-            --disable-dev-shm-usage
 
       - name: Integration Test
         shell: bash
