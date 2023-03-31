@@ -89,6 +89,8 @@ jobs:
   integration-test:
     runs-on: ubuntu-latest
     container:
+      # ローカル上での確認コマンド
+      # docker run -v C:\Users\besta\app\tech_blog\poc-frontend-app:/home/sample_app -p 3000:3000 -u root --name test21 --rm -it browserless/chrome bash
       image: browserless/chrome:latest
       volumes:
         - ${{ github.workspace }}:${{ github.workspace }}

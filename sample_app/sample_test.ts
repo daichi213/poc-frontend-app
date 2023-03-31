@@ -4,7 +4,7 @@ const chrome = require('selenium-webdriver/chrome');
 (async function example() {
   let driver = await new Builder()
       .forBrowser('chrome')
-      .setChromeOptions(new chrome.Options().addArguments('--headless'))
+      .setChromeOptions(new chrome.Options().addArguments('--headless','--no-sandbox'))
       .build();
   try {
     // ページを開く
