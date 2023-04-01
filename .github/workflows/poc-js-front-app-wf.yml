@@ -137,6 +137,11 @@ jobs:
           key: node-modules-${{ github.sha }}
           restore-keys: node-modules-
 
+      - name: App Src Build
+        shell: bash
+        run: |
+            sh ${{ github.workspace }}/.github/build.sh
+
       - name: Integration Test
         shell: bash
         run: |
