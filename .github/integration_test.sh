@@ -6,3 +6,16 @@
 ####################################################
 
 echo "Read the integration_test.sh"
+cd ./sample_app
+
+# Start Next.js application in the background
+yarn run dev > /dev/null 2>&1 &
+echo "Next.js is running..."
+
+echo "Run Selenium tests"
+cd ./selenium
+node sample_test.ts
+
+# Stop Next.js application
+# kill $(lsof -t -i :3000 -sTCP:LISTEN) > /dev/null 2>&1
+# echo "Server stopped."
