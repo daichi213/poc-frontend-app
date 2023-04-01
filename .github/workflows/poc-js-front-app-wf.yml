@@ -96,7 +96,7 @@ jobs:
       volumes:
         - ${{ github.workspace }}:${{ github.workspace }}
       env:
-        NODE_ENV: development
+        NODE_ENV: production
       options: --cpus 2
     steps:
       - uses: actions/checkout@v3
