@@ -6,19 +6,16 @@
 ####################################################
 
 echo "Read the integration_test.sh"
-cd ./sample_app/selenium
+cd ./sample_app
 
 # Start Next.js application in the background
-nohup next dev > /dev/null 2>&1 &
-echo "Waiting for server to start..."
+yarn run dev > /dev/null 2>&1 &
+echo "Next.js is running..."
 
-sleep 100
-
-echo "Server is ready!"
-
-# Run Selenium tests
+echo "Run Selenium tests"
+cd ./selenium
 node sample_test.ts
 
 # Stop Next.js application
-kill $(lsof -t -i :3000 -sTCP:LISTEN) > /dev/null 2>&1
-echo "Server stopped."
+# kill $(lsof -t -i :3000 -sTCP:LISTEN) > /dev/null 2>&1
+# echo "Server stopped."

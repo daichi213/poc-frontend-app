@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# xmllint利用のため
-sudo apt-get -y install libxml2-utils
 sudo apt-get install -y wget unzip
 
 # sudoで実行すること
@@ -12,13 +10,14 @@ sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo a
 sudo apt-get update
 sudo apt-get install -y google-chrome-stable
 
+# ChromeDriverのバージョン整形に使用するxqコマンドのバイナリインストール
+wget https://github.com/maiha/xq.cr/releases/download/v0.3.0/xq -P /usr/bin && chmod +x /usr/bin/xq
+
 # chromeのバージョンを取得
 chrome_v=$(google-chrome --version | cut -d " " -f 3 | cut -d "." -f 1)
 
 # chromedriverのバージョンを確認
-chrome_driver_list=`curl https://chromedriver.storage.googleapis.com/ > /tmp/chrome.v`
-chrome_chrome_ver_list=`xmllint --format /tmp/chrome.v | grep Key | grep ${chrome_v} | grep linux | cut -d">" -f2 | cut -d"/" -f1`
-chrome_driver_ver=`echo ${chrome_chrome_ver_list} | cut -d" " -f1`
+chrome_driver_ver=$(curl -s https://chromedriver.storage.googleapis.com/ | xq . | grep ${chrome_v} | grep Key | grep linux | cut -d">" -f2 | cut -d"/" -f1 | head -n 1)
 
 # google-chromeと同じバージョンをwget
 sudo wget https://chromedriver.storage.googleapis.com/${chrome_driver_ver}/chromedriver_linux64.zip -P /tmp

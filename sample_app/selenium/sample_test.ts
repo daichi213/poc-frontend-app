@@ -1,15 +1,17 @@
-const webdriver = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
+const { Builder, By, Key, until } = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
 
 const options = new chrome.Options();
-options.addArguments('--headless'); // ヘッドレスモードを有効にする
-options.addArguments('--disable-dev-shm-usage');
-options.addArguments('--no-sandbox');
+options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome のパスを指定
+options.addArguments("--headless"); // ヘッドレスモードを有効にする
+options.addArguments("--disable-dev-shm-usage");
+options.addArguments("--no-sandbox");
+options.addArguments("--remote-debugging-port=9222");
 
-const driver = new webdriver.Builder()
-  .forBrowser('chrome')
+const driver = new Builder()
+  .forBrowser("chrome")
   .setChromeOptions(options)
-  .usingServer('http://localhost:3001/')
+  .setChromeService(new chrome.ServiceBuilder("/usr/local/bin/chromedriver"))
   .build();
 
 // テストコードを書く
@@ -17,11 +19,11 @@ const driver = new webdriver.Builder()
 (async function example() {
   try {
     // 指定されたURLに移動
-    await driver.get('http://localhost:3000/');
+    await driver.get("http://localhost:3000/");
 
     // リンク先の要素を検索し、クリックして移動
     const linkElement = await driver.wait(
-      driver.until.elementLocated(driver.By.linkText('Next.js!')),
+      until.elementLocated(By.linkText("Next.js!")),
       10000
     ); // 10秒間待機する
     await linkElement.click();
@@ -48,20 +50,20 @@ const driver = new webdriver.Builder()
     console.log(`HTTP Status Code: ${httpStatusCode}`);
 
     // リンク先のページがアクティブであることを確認
-    if (currentUrl === 'https://nextjs.org/') {
-      console.log('Link is active.');
+    if (currentUrl === "https://nextjs.org/") {
+      console.log("Link is active.");
     } else {
-      console.log('Link is not active.');
+      console.log("Link is not active.");
     }
 
     // HTTPレスポンスが200であることを確認
     if (httpStatusCode === 200) {
-      console.log('HTTP response status is 200.');
+      console.log("HTTP response status is 200.");
     } else {
       console.log(`HTTP response status is ${httpStatusCode}.`);
     }
   } catch (err) {
-    console.error('An error occurred:', err);
+    console.error("An error occurred:", err);
   } finally {
     try {
       await driver.quit();
