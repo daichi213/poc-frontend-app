@@ -9,7 +9,8 @@ echo "Read the integration_test.sh"
 cd ./sample_app
 
 # Start Next.js application in the background
-yarn run dev > /dev/null 2>&1 &
+yarn run build
+yarn run start > /dev/null 2>&1 &
 echo "Next.js is running..."
 
 echo "Run Selenium tests"

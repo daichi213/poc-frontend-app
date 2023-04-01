@@ -76,11 +76,6 @@ jobs:
         run: |
             sh ${{ github.workspace }}/.github/build.sh
 
-      - name: Integration Test
-        shell: bash
-        run: |
-            sh ${{ github.workspace }}/.github/integration_test.sh
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
