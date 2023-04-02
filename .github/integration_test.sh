@@ -14,6 +14,7 @@ yarn run start > /dev/null 2>&1 &
 echo "Next.js is running..."
 
 echo "Run Selenium tests"
+ls
 cd ./selenium
 node sample_test.ts
 echo "Finished Selenium tests"
