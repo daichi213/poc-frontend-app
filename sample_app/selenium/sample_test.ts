@@ -1,6 +1,5 @@
-export {};
-const { Builder, By, Key, until } = require("selenium-webdriver");
-const chrome = require("selenium-webdriver/chrome");
+import { Builder, By, Key, until } from "selenium-webdriver";
+import chrome from "selenium-webdriver/chrome";
 
 const options = new chrome.Options();
 options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome のパスを指定
@@ -17,7 +16,7 @@ const driver = new Builder()
 
 // テストコードを書く
 
-(async function example() {
+async function runTest(): Promise<void>{
   try {
     // 指定されたURLに移動
     await driver.get("http://localhost:3000/");
@@ -72,4 +71,4 @@ const driver = new Builder()
       console.error('An error occurred while quitting the driver:', err);
     }
   }
-})();
+}
