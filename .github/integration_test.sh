@@ -15,8 +15,7 @@ echo "Next.js is running..."
 
 echo "Run Selenium tests"
 cd ./selenium
-node sample_test.js > log.txt
-cat log.txt
+node sample_test.ts
 echo "Finished Selenium tests"
 
 # Stop Next.js application
