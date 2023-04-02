@@ -1,5 +1,5 @@
-import { Builder, By, Key, until } from "selenium-webdriver";
-import chrome from "selenium-webdriver/chrome.js";
+import { Builder, By, Key, until } from 'selenium-webdriver';
+import chrome from 'selenium-webdriver/chrome.js';
 
 const options = new chrome.Options();
 options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome のパスを指定
@@ -16,7 +16,7 @@ const driver = new Builder()
 
 // テストコードを書く
 
-async function runTest(){
+export async function runTest(){
   try {
     // 指定されたURLに移動
     await driver.get("http://localhost:3000/");
@@ -72,5 +72,3 @@ async function runTest(){
     }
   }
 }
-
-export{}
