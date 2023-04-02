@@ -1,5 +1,7 @@
-import { Builder, By, Key, until } from "selenium-webdriver";
-import chrome from "selenium-webdriver/chrome";
+export {};
+
+const { Builder, By, Key, until } = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
 
 const options = new chrome.Options();
 options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome のパスを指定
