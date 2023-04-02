@@ -1,5 +1,5 @@
-import { Builder, By, Key, until } from 'selenium-webdriver';
-import chrome from 'selenium-webdriver/chrome.js';
+const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome.js');
 
 const options = new chrome.Options();
 options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome のパスを指定
@@ -16,7 +16,7 @@ const driver = new Builder()
 
 // テストコードを書く
 
-export async function runTest(){
+async function runTest(){
   try {
     // 指定されたURLに移動
     await driver.get("http://localhost:3000/");
@@ -32,14 +32,6 @@ export async function runTest(){
     const currentUrl = await driver.getCurrentUrl();
     // 結果を出力
     console.log(`Current URL: ${currentUrl}`);
-
-    // ※現在は非推奨なようです。代替のfetchを使います。
-    //const httpStatusCode = await driver.executeScript(`
-    //const xhr = new XMLHttpRequest();
-    //xhr.open('HEAD', window.location.href, false);
-    //xhr.send();
-    //return xhr.status;
-    //`);
 
     // seleniumにレスポンス取得メソッドがないため、無理やりJSのメソッドを使う
     const httpStatusCode = await driver.executeScript(`
@@ -72,3 +64,5 @@ export async function runTest(){
     }
   }
 }
+
+runTest();
