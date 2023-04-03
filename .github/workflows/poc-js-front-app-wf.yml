@@ -17,11 +17,6 @@ jobs:
       env:
         NODE_ENV: development
       options: --cpus 2
-    services:
-      chrome:
-        image: browserless/chrome:latest
-        ports:
-          - 3001:3001
     steps:
       - uses: actions/checkout@v3
 
@@ -35,7 +30,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '19.x'
+          node-version: '18.15.0'
 
       - name: Install sudo
         run: apt-get update && apt-get install -y sudo
