@@ -15,10 +15,5 @@ echo "Next.js is running..."
 
 echo "Run Selenium tests"
 cd ./selenium
-ls
 node sample_test.cjs
 echo "Finished Selenium tests"
-
-# Stop Next.js application
-# kill $(lsof -t -i :3000 -sTCP:LISTEN) > /dev/null 2>&1
-# echo "Server stopped."
