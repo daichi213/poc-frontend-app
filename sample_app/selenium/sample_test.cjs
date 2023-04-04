@@ -1,3 +1,3 @@
-import runTest from '.index/index.js'
+const runTest = require('./index/index.js');
 
 runTest();

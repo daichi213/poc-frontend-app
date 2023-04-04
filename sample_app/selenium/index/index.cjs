@@ -17,7 +17,7 @@ const driver = new Builder()
 
 // テストコードを書く
 
-export default async function runTest(){
+async function runTest(){
   try {
     // 指定されたURLに移動
     await driver.get("http://localhost:3000/");
@@ -65,3 +65,5 @@ export default async function runTest(){
     }
   }
 }
+
+module.exports = runTest;
