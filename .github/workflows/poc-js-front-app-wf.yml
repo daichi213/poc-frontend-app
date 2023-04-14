@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: node:19-buster-slim
+      image: ubuntu:20.04
       volumes:
         - ${{ github.workspace }}:${{ github.workspace }}
       env:
@@ -26,6 +26,21 @@ jobs:
           token: ${{ secrets.PAT_PIPELINE_MAKING_REPO }}
           path: './pipeline-making'
           ref: "feature/ozaki_poc"
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+
+      - name: Install sudo
+        run: apt-get update && apt-get install -y sudo
+
+      - name: Install Yarn
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl gnupg &&
+          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - &&
+          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list &&
+          sudo apt-get update && sudo apt-get install -y yarn
 
       - name: SetEnv
         env:
@@ -61,11 +76,6 @@ jobs:
         run: |
             sh ${{ github.workspace }}/.github/unit_test.sh
 
-      - name: Integration Test
-        shell: bash
-        run: |
-            sh ${{ github.workspace }}/.github/integration_test.sh
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -75,3 +85,64 @@ jobs:
           timeout: 5m
           vuln-type: library
           exit-code: 0
+
+  integration-test:
+    runs-on: ubuntu-latest
+    container:
+      image: docker.io/daichiwealsoft/integration_test_job_base_image:v1.0.0
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USER_NAME }}
+        password: ${{ secrets.DOCKERHUB_USER_PASSWORD }}
+      volumes:
+        - ${{ github.workspace }}:${{ github.workspace }}
+      env:
+        NODE_ENV: production
+      options: --cpus 2
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/checkout@v3
+        with:
+          repository: 'wealsoft/pipeline-making'
+          token: ${{ secrets.PAT_PIPELINE_MAKING_REPO }}
+          path: './pipeline-making'
+          ref: "feature/ozaki_poc"
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+
+      - name: SetEnv
+        env:
+          PR_BRANCH_NAME: ${{ github.head_ref }}
+        shell: bash
+        run: |
+          echo build_tag=${PR_BRANCH_NAME#*/} >> $GITHUB_ENV
+
+      - name: SetConfigEnv
+        uses: mikefarah/yq@master
+        with:
+          cmd: |
+            CONFIG_COMMON_LIST=$(yq '.common' ./.github/config.yml | sed 's/\:\ /\=/')
+            for config_common in $CONFIG_COMMON_LIST
+            do
+              echo "$config_common" >> $GITHUB_ENV
+            done
+
+      - name: Cache
+        uses: actions/cache@v3.0.11
+        with:
+          path: "**/node_modules"
+          key: node-modules-${{ github.sha }}
+          restore-keys: node-modules-
+
+      - name: App Src Build
+        shell: bash
+        run: |
+            sh ${{ github.workspace }}/.github/build.sh
+
+      - name: Integration Test
+        shell: bash
+        run: |
+            sh ${{ github.workspace }}/.github/integration_test.sh
