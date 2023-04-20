@@ -30,7 +30,11 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
+<<<<<<< HEAD
           node-version: '19.x'
+=======
+          node-version: '18.15.0'
+>>>>>>> origin/main
 
       - name: Install sudo
         run: apt-get update && apt-get install -y sudo
@@ -89,6 +93,7 @@ jobs:
   integration-test:
     runs-on: ubuntu-latest
     container:
+<<<<<<< HEAD
       # ローカル上での確認コマンド
       # docker run -v C:\Users\besta\app\tech_blog\poc-frontend-app:/home/sample_app -p 3000:3000 -u root --name test21 --rm -it browserless/chrome bash
       image: browserless/chrome:latest
@@ -105,6 +110,17 @@ jobs:
     #     image: browserless/chrome:latest
     #     ports:
     #       - 3001:3001
+=======
+      image: docker.io/daichiwealsoft/integration_test_job_base_image:v1.0.0
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USER_NAME }}
+        password: ${{ secrets.DOCKERHUB_USER_PASSWORD }}
+      volumes:
+        - ${{ github.workspace }}:${{ github.workspace }}
+      env:
+        NODE_ENV: production
+      options: --cpus 2
+>>>>>>> origin/main
     steps:
       - uses: actions/checkout@v3
 
@@ -118,14 +134,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '19.x'
-
-      - name: Install Yarn
-        run: |
-          sudo apt-get update && sudo apt-get install -y curl gnupg &&
-          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - &&
-          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list &&
-          sudo apt-get update && sudo apt-get install -y yarn
+          node-version: '18.15.0'
 
       - name: SetEnv
         env:
@@ -151,6 +160,14 @@ jobs:
           key: node-modules-${{ github.sha }}
           restore-keys: node-modules-
 
+<<<<<<< HEAD
+=======
+      - name: App Src Build
+        shell: bash
+        run: |
+            sh ${{ github.workspace }}/.github/build.sh
+
+>>>>>>> origin/main
       - name: Integration Test
         shell: bash
         run: |
