@@ -2,8 +2,10 @@ name: poc-js-front-app-wf
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [ "main" ]
+  push:
+    branches:
+      - main
+      - feature**
   # pull_request:
   #   branches: [ "main" ]
 
