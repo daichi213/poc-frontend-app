@@ -9,8 +9,7 @@ on:
 
 jobs:
   build:
-    uses: wealsoft/public-pipeline-making/.github/workflows/js-blog-build-deployment.yml@main
+    uses: wealsoft/public-pipeline-making/.github/workflows/js-blog-build-test.yml@feature/pipeline_making
     secrets:
       DOCKERHUB_USER_NAME: ${{ secrets.DOCKERHUB_USER_NAME }}
       DOCKERHUB_USER_PASSWORD: ${{ secrets.DOCKERHUB_USER_PASSWORD }}
-      PAT_PIPELINE_MAKING_REPO: ${{ secrets.PAT_PIPELINE_MAKING_REPO }}
