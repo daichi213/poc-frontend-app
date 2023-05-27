@@ -11,7 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:20.04
+      image: docker.io/daichiwealsoft/integration_test_job_base_image:v1.0.1
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USER_NAME }}
+        password: ${{ secrets.DOCKERHUB_USER_PASSWORD }}
       volumes:
         - ${{ github.workspace }}:${{ github.workspace }}
       env:
@@ -27,20 +30,20 @@ jobs:
           path: './pipeline-making'
           ref: "feature/ozaki_poc"
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.15.0'
+      # - name: Install Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '18.15.0'
 
-      - name: Install sudo
-        run: apt-get update && apt-get install -y sudo
+      # - name: Install sudo
+      #   run: apt-get update && apt-get install -y sudo
 
-      - name: Install Yarn
-        run: |
-          sudo apt-get update && sudo apt-get install -y curl gnupg &&
-          curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - &&
-          echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list &&
-          sudo apt-get update && sudo apt-get install -y yarn
+      # - name: Install Yarn
+      #   run: |
+      #     sudo apt-get update && sudo apt-get install -y curl gnupg &&
+      #     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - &&
+      #     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list &&
+      #     sudo apt-get update && sudo apt-get install -y yarn
 
       - name: SetEnv
         env:
@@ -50,14 +53,13 @@ jobs:
           echo build_tag=${PR_BRANCH_NAME#*/} >> $GITHUB_ENV
 
       - name: SetConfigEnv
-        uses: mikefarah/yq@master
-        with:
-          cmd: |
-            CONFIG_COMMON_LIST=$(yq '.common' ./.github/config.yml | sed 's/\:\ /\=/')
-            for config_common in $CONFIG_COMMON_LIST
-            do
-              echo "$config_common" >> $GITHUB_ENV
-            done
+        shell: bash
+        run: |
+          CONFIG_COMMON_LIST=$(yq '.common' ./.github/config.yml | sed 's/\:\ /\=/')
+          for config_common in $CONFIG_COMMON_LIST
+          do
+            echo "$config_common" >> $GITHUB_ENV
+          done
 
       - name: Cache
         uses: actions/cache@v3.0.11
@@ -89,7 +91,7 @@ jobs:
   integration-test:
     runs-on: ubuntu-latest
     container:
-      image: docker.io/daichiwealsoft/integration_test_job_base_image:v1.0.0
+      image: docker.io/daichiwealsoft/integration_test_job_base_image:v1.0.1
       credentials:
         username: ${{ secrets.DOCKERHUB_USER_NAME }}
         password: ${{ secrets.DOCKERHUB_USER_PASSWORD }}
@@ -108,10 +110,10 @@ jobs:
           path: './pipeline-making'
           ref: "feature/ozaki_poc"
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.15.0'
+      # - name: Install Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '18.15.0'
 
       - name: SetEnv
         env:
@@ -121,14 +123,13 @@ jobs:
           echo build_tag=${PR_BRANCH_NAME#*/} >> $GITHUB_ENV
 
       - name: SetConfigEnv
-        uses: mikefarah/yq@master
-        with:
-          cmd: |
-            CONFIG_COMMON_LIST=$(yq '.common' ./.github/config.yml | sed 's/\:\ /\=/')
-            for config_common in $CONFIG_COMMON_LIST
-            do
-              echo "$config_common" >> $GITHUB_ENV
-            done
+        shell: bash
+        run: |
+          CONFIG_COMMON_LIST=$(yq '.common' ./.github/config.yml | sed 's/\:\ /\=/')
+          for config_common in $CONFIG_COMMON_LIST
+          do
+            echo "$config_common" >> $GITHUB_ENV
+          done
 
       - name: Cache
         uses: actions/cache@v3.0.11

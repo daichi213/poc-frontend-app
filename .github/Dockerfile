@@ -8,6 +8,13 @@ FROM node:16.20.0-buster
 
 RUN apt-get update && apt-get install wget -y
 
+# 設定ファイルの読み込みにyqコマンド（jqのyaml版）を使用しているためインストール
+# なお、yqは２種類あり、goが動作が安定しているためそれを使用
+ARG VERSION=v4.2.0
+ARG BINARY=yq_linux_amd64
+RUN wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY} -O /usr/bin/yq &&\
+    chmod +x /usr/bin/yq
+
 # パッケージリストの更新とGoogle Chromeのインストール
 RUN echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
