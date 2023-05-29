@@ -1,2 +1,3 @@
 common:
   SHELL_FILE_PATH: .github/build_and_test.sh
+  INTEGRATION_TEST: true
