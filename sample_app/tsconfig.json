@@ -16,6 +16,6 @@
     "incremental": true,
     "types": ["@mui/material", "@emotion/react/types/css-prop"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/details/[slug].tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/details/[slug]"],
   "exclude": ["./node_modules/**/*"]
 }

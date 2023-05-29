@@ -17,7 +17,7 @@ function Copyright() {
   );
 }
 
-export default function Footer() {
+export default function DetailFooter() {
   return (
     <Box component="footer" sx={{ bgcolor: "background.paper", py: 6 }}>
       <Container maxWidth="lg">

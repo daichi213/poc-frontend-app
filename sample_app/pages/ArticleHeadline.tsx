@@ -6,22 +6,23 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea, Link } from "@mui/material";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 
-const tags = [
-  { tag: "技術", url: "#" },
-  { tag: "デザイン", url: "#" },
-  { tag: "やってみた", url: "#" },
-];
+interface articleHeadlineProps {
+  image: string;
+  index: number;
+  title: string;
+  description: string;
+  tags: string[];
+}
 
-export default function ArticleHeadline1() {
-  const slug = 1;
+export default function ArticleHeadline(props: articleHeadlineProps) {
+  const { index, image, title, description, tags } = props;
 
   const router = useRouter();
 
   const handleCardClick = () => {
-    const targetPage = `/details/${slug}`; // 遷移先のページパス
+    const targetPage = `/details/${index}`; // 遷移先のページパス
     console.log("Navigating to:", targetPage); // コンソールログでURLを出力
     router.push(targetPage); // ページ遷移
   };
@@ -33,24 +34,27 @@ export default function ArticleHeadline1() {
           <CardMedia
             component="img"
             height="140"
-            image="/images/c_logo.jpg"
+            image={image}
             alt="language"
           />
           <CardContent>
             <Typography variant="h5" component="div">
-              C＃のフレームワークについて
+              {title}
             </Typography>
-            <Link
-              color="inherit"
-              noWrap
-              variant="body2"
-              sx={{ p: 1, flexShrink: 0 }}
-            >
-              {tags[0].tag}
-            </Link>
+            {/* タグのボタンを表示 */}
+            {tags &&
+              tags.map((tag, tagIndex) => (
+                <Button
+                  key={tagIndex}
+                  variant="contained"
+                  color="secondary"
+                  sx={{ m: 1 }}
+                >
+                  {tag}
+                </Button>
+              ))}
             <Typography variant="body2" color="text.secondary">
-              はじめまして！社員のSと申します。
-              本日はC＃のフレームワークについて、特徴を紹介します。
+              {description}
             </Typography>
           </CardContent>
         </CardActionArea>
