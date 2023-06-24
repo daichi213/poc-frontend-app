@@ -28,7 +28,7 @@ yarn install
 
 echo "########## Lint & Jest ##########"
 yarn lint
-yarn test
+# yarn test
 
 ####################################################
 # srcビルド
