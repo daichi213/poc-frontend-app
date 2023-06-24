@@ -37,6 +37,10 @@ yarn lint
 echo "########## Build ##########"
 yarn run build
 
+# 資材をGithub Artifactへ格納し、後続のジョブで統合テスト・デプロイが実行される
+cp -pr ./out/* $UPLOAD_FILES_PATH
+find $UPLOAD_FILES_PATH
+
 ####################################################
 # Seleniumを使用した統合テスト
 ####################################################
