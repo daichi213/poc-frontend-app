@@ -11,6 +11,7 @@ BUILD_FILES_PATH=$1
 
 # Start Next.js application in the background
 echo "########## Integration Test ##########"
+cd ./sample_app
 yarn run start > /dev/null 2>&1 &
 echo "Next.js is running..."
 
