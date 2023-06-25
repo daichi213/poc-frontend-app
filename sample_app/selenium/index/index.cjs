@@ -1,6 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome.js');
-const chromedriver = new chrome.ServiceBuilder("/usr/local/bin/chromedriver");
+const chromedriver = new chrome.ServiceBuilder("/usr/bin/chromedriver");
 
 const options = new chrome.Options();
 options.setChromeBinaryPath("/usr/bin/google-chrome-stable"); // Google Chrome のパスを指定
