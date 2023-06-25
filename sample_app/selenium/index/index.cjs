@@ -20,7 +20,7 @@ const driver = new Builder()
 async function runTest(){
   try {
     // 指定されたURLに移動
-    await driver.get("http://service/");
+    await driver.get("http://service:4000/");
 
     // リンク先の要素を検索し、クリックして移動
     const linkElement = await driver.wait(
