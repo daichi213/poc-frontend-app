@@ -16,7 +16,6 @@ echo "########## Integration Test ##########"
 # echo "Next.js is running..."
 
 cd ./sample_app
-curl -v http://service
 echo "Run Selenium tests"
 cd ./selenium
 node sample_test.cjs
